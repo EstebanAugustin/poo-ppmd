@@ -22,6 +22,26 @@ class Grid:
         Calcule le nombre de mines voisines de chaque case
         """
         return
+    def get_square_neighbours(self, row, col):
+        neighbours = [
+            (row-1, col-1),
+            (row-1, col),
+            (row-1, col+1),
+            (row, col-1),
+            (row, col+1),
+            (row+1, col-1),
+            (row+1, col),
+            (row+1, col+1)
+        ]
+        
+        valid_neighbours = []
+        
+        for i, (row, col) in enumerate(neighbours) :
+            if row >= 0 and col >= 0 and row < self.n_rows and col < self.n_cols:
+                valid_neighbours.append((row, col))
+                
+        return valid_neighbours
+                
         
     def show(self):
         """
