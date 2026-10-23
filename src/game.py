@@ -93,7 +93,7 @@ class Game:
         
     def mark_grid_square(self, row, col):
         """
-        Marque une case de la grille
+        Marque une case de la grille.
         """
         return self.grid.mark_square(row, col)
     
