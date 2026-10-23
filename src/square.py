@@ -22,11 +22,11 @@ class Square:
         """
         self.is_mined = True
         
-    def mark(self, state):
+    def mark(self):
         """
         Marque la case
         """
-        return
+        self.is_marked = not(self.is_marked)
     
     def show(self):
         """
@@ -34,9 +34,9 @@ class Square:
         """
         if self.is_covered:
             if self.is_marked:
-                return "$"
-            return "\U00002B1B"  # carré
+                return "\U00002B1B"
+            return "\U00002B1C"  # carré
         elif self.is_mined :
-            return "#"
+            return "# "
         else:
             return str(self.hint) + " "
