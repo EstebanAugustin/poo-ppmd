@@ -4,26 +4,27 @@ class Square:
     """
     
     def __init__(self):
-        self.is_covered = True
-        self.is_mined = True
+        self.is_covered = False
+        self.is_mined = False
         self.is_marked = False
         self.hint = 0
     
-    def set_is_covered(self, state):
+    def reveal(self):
         """
-        Change l'état de la case de dé/couvert à dé/couvert
+        Révèle la case
         """
-        return
+        self.is_covered = False
+        return (self.is_mined, self.hint)
         
-    def set_is_mined(self, state):
+    def mine(self):
         """
-        Change l'état de la case de déminée à minée
+        Mine la case
         """
-        return
+        self.is_mined = True
         
-    def set_is_marked(self, state):
+    def mark(self, state):
         """
-        Change l'état de la case de non-marquée à marquée
+        Marque la case
         """
         return
     
@@ -33,9 +34,9 @@ class Square:
         """
         if self.is_covered:
             if self.is_marked:
-                return "\U0001F6A9"
-            return "\U00002B1B"
+                return "$"
+            return "\U00002B1B"  # carré
         elif self.is_mined :
-            return "\U0001F4A3"
+            return "#"
         else:
-            return "?"
+            return str(self.hint)
