@@ -13,7 +13,6 @@ class Game:
         self.score = 0
         self.grid = Grid()
         
-        self.launch()
         
     def launch(self):
         """
@@ -22,9 +21,9 @@ class Game:
         self.show()
         selected_square, selected_action = self.ask_player(first_turn=True)
         self.grid.generate(selected_square[0], selected_square[1])
-        self.show()
         
-        while not self.is_over():
+        
+        while self.grid.count_squares() > 0:
             self.show()
             selected_square, selected_action = self.ask_player()
             
@@ -32,10 +31,13 @@ class Game:
                 square_is_mined = self.reveal_grid_square(selected_square[0], selected_square[1])
                 
                 if square_is_mined :
-                    break
+                    print("Perdu")
+                    return
             
             elif selected_action == "2":
                 self.mark_grid_square(selected_square[0], selected_square[1])
+        
+        print("Gagné")
             
     
     def ask_player(self, first_turn=False):
