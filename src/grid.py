@@ -7,7 +7,7 @@ class Grid:
     Instancie une grille d'une partie de démineur
     """
     
-    def __init__(self, n_rows=10, n_cols=10, n_mines=20):
+    def __init__(self, n_rows=5, n_cols=5, n_mines=3):
         self.n_rows = n_rows
         self.n_cols = n_cols
         self.n_mines = n_mines
@@ -105,9 +105,9 @@ class Grid:
         return self.n_squares_left - self.n_mines
 
         
-    def mark_square(self):
+    def mark_square(self, row, col):
         """
         Marque une case
         """
-        return
+        self.squares[row][col].mark()
         
