@@ -89,11 +89,11 @@ class Game:
         """
         return self.grid.reveal_square(row, col)
         
-    def mark_grid_square(self):
+    def mark_grid_square(self, row, col):
         """
         Marque une case de la grille
         """
-        return
+        return self.grid.mark_square(row, col)
     
     def show(self):
         """
