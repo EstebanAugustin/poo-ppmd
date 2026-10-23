@@ -36,9 +36,9 @@ class Game:
             
             elif selected_action == "2":
                 self.mark_grid_square(selected_square[0], selected_square[1])
+            
     
     def ask_player(self, first_turn=False):
-    def ask_player(self):
         """
         Demande au joueur l'action à effectuer :
         - dévoiler une case
@@ -81,11 +81,11 @@ class Game:
         
         return (selected_square, selected_action)
     
-    def reveal_grid_square(self):
+    def reveal_grid_square(self, row, col):
         """
         Révèle une case de la grille
         """
-        return
+        return self.grid.reveal_square(row, col)
         
     def mark_grid_square(self):
         """
@@ -97,8 +97,7 @@ class Game:
         """
         Affiche la partie dans la console
         """
-        grid_str = self.grid.show()
-        print(grid_str, flush=True)
+        self.grid.show()
         
     def end(self):
         """
@@ -109,4 +108,4 @@ class Game:
         
 if __name__ == "__main__":
     game = Game()
-    game.show()
+    game.launch()
