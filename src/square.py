@@ -4,7 +4,7 @@ class Square:
     """
     
     def __init__(self):
-        self.is_covered = False
+        self.is_covered = True
         self.is_mined = False
         self.is_marked = False
         self.hint = 0
@@ -39,4 +39,4 @@ class Square:
         elif self.is_mined :
             return "#"
         else:
-            return str(self.hint)
+            return str(self.hint) + " "
