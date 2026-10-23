@@ -7,15 +7,17 @@ class Grid:
     Instancie une grille d'une partie de démineur
     """
     
-    def __init__(self, n_rows=10, n_cols=10, n_mines=10):
+    def __init__(self, n_rows=10, n_cols=10, n_mines=20):
         self.n_rows = n_rows
         self.n_cols = n_cols
         self.n_mines = n_mines
+        self.n_squares_left = n_rows * n_cols
         self.squares = [[Square() for i in range(n_cols)] for i in range(n_rows)]
 
     def generate(self, excluded_row, excluded_col):
         self.place_mines(excluded_row, excluded_col)
         self.compute_hints()
+        self.reveal_square(excluded_row, excluded_col)
         
     def place_mines(self, excluded_row, excluded_col):
         """
@@ -77,11 +79,31 @@ class Grid:
             string += "\n"
         print(string)
         
-    def reveal_square(self):
-        """
-        Révèle une case
-        """
-        return
+    def reveal_square(self, row, col):
+            """
+            Révèle une case et propage récursivement la découverte aux voisins 
+            si la case n'est pas minée et que son indice est 0.
+            """
+            current_square = self.squares[row][col]
+            
+            if not current_square.is_covered:
+                return False
+                
+            square_is_mined, square_hint = current_square.reveal()
+            self.n_squares_left -= 1
+            
+            if square_is_mined:
+                return True
+                
+            if square_hint == 0:
+                for neighbour_row, neighbour_col in self.get_square_neighbours(row, col):
+                    self.reveal_square(neighbour_row, neighbour_col)
+                    
+            return False
+    
+    def count_squares(self):
+        return self.n_squares_left - self.n_mines
+
         
     def mark_square(self):
         """
