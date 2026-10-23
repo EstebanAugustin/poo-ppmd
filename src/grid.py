@@ -29,7 +29,15 @@ class Grid:
         """
         Calcule le nombre de mines voisines de chaque case
         """
-        return
+        for i in range(self.n_rows):
+            for j in range(self.n_cols):
+                current_square = self.squares[i][j]
+                neighbours = self.get_square_neighbours(i, j)
+                for k, l in neighbours:
+                    square_neighbour = self.squares[k][l]
+                    if square_neighbour.is_mined == True:
+                        current_square.hint += 1
+        
     def get_square_neighbours(self, row, col):
         neighbours = [
             (row-1, col-1),
