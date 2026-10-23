@@ -11,11 +11,19 @@ class Grid:
         self.n_mines = n_mines
         self.squares = [[Square() for i in range(n_cols)] for i in range(n_rows)]
         
-    def place_mines(self):
+    def place_mines(self, excluded_row, excluded_col):
         """
         Place les mines sur la grille
         """
-        return
+        positions = []
+        for i in range(self.n_rows):
+            for j in range(self.n_cols):
+                if not (abs(i - excluded_row) <= 1 and abs(j - excluded_col) <= 1):
+                    positions.append((i, j))
+        
+        random.shuffle(positions)
+        for i, j in positions[:self.n_mines]:
+            self.squares[i][j].mine()
         
     def compute_hints(self):
         """
