@@ -31,12 +31,14 @@ class Game:
                 square_is_mined = self.reveal_grid_square(selected_square[0], selected_square[1])
                 
                 if square_is_mined :
+                    self.show()
                     print("Perdu")
                     return
             
             elif selected_action == "2":
                 self.mark_grid_square(selected_square[0], selected_square[1])
-        
+                
+        self.show()
         print("Gagné")
             
     
