@@ -20,19 +20,49 @@ class Game:
         self.show()
         self.ask_player()
     
+    def ask_player(self, first_turn=False):
     def ask_player(self):
         """
         Demande au joueur l'action à effectuer :
         - dévoiler une case
         - marquer une case
         """
-        ask_square = "Sélectionnez une case i,j \n"
+        ask_square = "Sélectionnez une case i,j "
+        
+        if first_turn:
+            ask_square += "à dévoiler"
+        ask_square += "\n"
         ask_square += "Exemple: case de la 3ème colonne de la 2ème ligne, entrer \"2,3\"\n"
         ask_square += ">>> "
-        answer_square = input(ask_square)
         
-        ask_action = "Dévoiler la case (1)\nMarquer la case (2)\n>>> "
-        answer_action = input(ask_action)
+        answer_pattern = r"^\s*(\d+)\s*,\s*(\d+)\s*$"
+        match = None
+        
+        while match is None:
+            answer_square = input(ask_square)
+            match = re.match(answer_pattern, answer_square)
+            if match is None:
+                print("Saisie invalide.\n")
+                
+        selected_square = [int(match.group(1))-1, int(match.group(2))-1]
+
+        if first_turn:
+            selected_action = "1"
+        
+        else:
+            authorized_actions = ["1", "2"]
+            ask_action = "Dévoiler la case (1)\n"
+            ask_action += "Marquer la case (2)\n"
+            ask_action += ">>> "
+            
+            selected_action = None
+            
+            while selected_action not in authorized_actions:
+                selected_action = input(ask_action)
+                if selected_action not in authorized_actions:
+                    print("Saisie invalide.\n")
+        
+        return (selected_square, selected_action)
     
     def reveal_grid_square(self):
         """
