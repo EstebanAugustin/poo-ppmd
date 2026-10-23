@@ -1,3 +1,5 @@
+import random
+
 from square import Square
 
 class Grid:
@@ -10,6 +12,10 @@ class Grid:
         self.n_cols = n_cols
         self.n_mines = n_mines
         self.squares = [[Square() for i in range(n_cols)] for i in range(n_rows)]
+
+    def generate(self, excluded_row, excluded_col):
+        self.place_mines(excluded_row, excluded_col)
+        self.compute_hints()
         
     def place_mines(self, excluded_row, excluded_col):
         """
@@ -69,7 +75,7 @@ class Grid:
                 string += self.squares[i][j].show()
                 string += " "
             string += "\n"
-        return string
+        print(string)
         
     def reveal_square(self):
         """
