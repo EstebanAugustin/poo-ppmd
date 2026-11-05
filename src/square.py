@@ -68,7 +68,9 @@ class Square:
         bool
             Succès de l'opération.
         """
+        
         self.is_mined = True
+        return True
         
     def mark(self):
         """
@@ -119,4 +121,5 @@ class Square:
         elif self.is_mined :
             return "# "
         else:
-            return str(self.hint) + " "        return True
+            return str(self.hint) + " "
+        

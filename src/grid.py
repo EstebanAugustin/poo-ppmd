@@ -69,8 +69,12 @@ class Grid:
         """
         positions = []
         for i in range(self.n_rows):
+            i_near_excluded_row = abs(i - excluded_row) <= 1
+            
             for j in range(self.n_cols):
-                if not (abs(i - excluded_row) <= 1 and abs(j - excluded_col) <= 1):
+                j_near_excluded_col = abs(j - excluded_col) <= 1
+                
+                if not (i_near_excluded_row and j_near_excluded_col):
                     positions.append((i, j))
         
         random.shuffle(positions)
@@ -91,12 +95,32 @@ class Grid:
             for j in range(self.n_cols):
                 current_square = self.squares[i][j]
                 neighbours = self.get_square_neighbours(i, j)
+                
                 for k, l in neighbours:
                     square_neighbour = self.squares[k][l]
+                    
                     if square_neighbour.is_mined == True:
                         current_square.hint += 1
         
     def get_square_neighbours(self, row, col):
+        """
+        Retourne les cases voisines d'une case.
+        
+        ...
+        
+        Paramètres
+        ----------
+        row : int
+            Ligne de la case.
+        col : int
+            Colonne de la case.
+        
+        Retour
+        --------
+        list of tuple of int
+            Coordonnées (ligne, colonne) des cases voisines situées
+            dans la grille.
+        """
         neighbours = [
             (row-1, col-1),
             (row-1, col),
@@ -111,7 +135,10 @@ class Grid:
         valid_neighbours = []
         
         for i, (row, col) in enumerate(neighbours) :
-            if row >= 0 and col >= 0 and row < self.n_rows and col < self.n_cols:
+            row_in_grid = (row >= 0 and row < self.n_rows)
+            col_in_grid = (col >= 0 and col < self.n_cols)
+            
+            if row_in_grid and col_in_grid:
                 valid_neighbours.append((row, col))
                 
         return valid_neighbours
@@ -133,6 +160,7 @@ class Grid:
             for j in range(self.n_cols):
                 string += str(self.squares[i][j])
                 string += " "
+            
             string += "\n"
             
         return string
@@ -182,27 +210,18 @@ class Grid:
         return False
     
     def count_squares(self):
-        return self.n_squares_left - self.n_mines
         """
-        Retourne les cases voisines d'une case.
+        Retourne le nombre de cases restantes.
         
         ...
         
-        Paramètres
-        ----------
-        row : int
-            Ligne de la case.
-        col : int
-            Colonne de la case.
-        
         Retour
         --------
-        list of tuple of int
-            Coordonnées (ligne, colonne) des cases voisines situées
-            dans la grille.
+        int
+            Nombre de cases couvertes non minées restantes.
         """
+        return self.n_squares_left - self.n_mines
 
-        
     def mark_square(self, row, col):
         """
         Marque une case.
@@ -217,13 +236,4 @@ class Grid:
             Colonne de la case.
         """
         self.squares[row][col].mark()
-                """
-        Retourne le nombre de cases restantes.
         
-        ...
-        
-        Retour
-        --------
-        int
-            Nombre de cases couvertes non minées restantes.
-        """

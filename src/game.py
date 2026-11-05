@@ -36,7 +36,7 @@ class Game:
     """
     
     def __init__(self, level=1):
-        self.time = 0.0
+        self.time = 0
         self.level = level
         self.score = 0
         self.grid = Grid()
@@ -58,10 +58,24 @@ class Game:
         """
         self.show()
         
+        selected_square, selected_action = self.ask_player(
+            first_turn=True
+        )
+        
+        square_row, square_col = selected_square
+        
+        self.grid.place_mines(
+            excluded_row=square_row,
+            excluded_col=square_col
+        )
+        self.grid.compute_hints()
+        
+        self.reveal_grid_square(square_row, square_col)
         
         while self.grid.count_squares() > 0:
             self.show()
             selected_square, selected_action = self.ask_player()
+            square_row, square_col = selected_square
             
             if selected_action == "1":
                 square_is_mined = self.reveal_grid_square(
@@ -81,6 +95,7 @@ class Game:
                 
         self.show()
         print("Gagné")
+        return True
             
     
     def ask_player(self, first_turn=False):
@@ -88,6 +103,22 @@ class Game:
         Demande au joueur l'action à effectuer :
         - dévoiler une case
         - marquer une case
+        
+        ...
+        
+        Paramètres
+        ----------
+        first_turn : bool, default=False
+            Premier tour de la partie : la case sélectionnée est
+            forcément dévoilée.
+        
+        Retour
+        --------
+        tuple
+            Couple (selected_square, selected_action) où
+            selected_square est la liste [ligne, colonne] de la case
+            sélectionnée (indexées à partir de 0) et selected_action
+            vaut "1" (dévoiler) ou "2" (marquer).
         """
         ask_square = "Sélectionnez une case i,j "
         
@@ -99,19 +130,6 @@ class Game:
         
         answer_pattern = r"^\s*(\d+)\s*,\s*(\d+)\s*$"
         match = None
-        selected_square, selected_action = self.ask_player(
-            first_turn=True
-        )
-        
-        square_row, square_col = selected_square
-        
-        self.grid.place_mines(
-            excluded_row=square_row,
-            excluded_col=square_col
-        )
-        self.grid.compute_hints()
-        
-        self.reveal_grid_square(square_row, square_col)
         
         while match is None:
             answer_square = input(ask_square)
@@ -129,7 +147,6 @@ class Game:
             ask_action = "Dévoiler la case (1)\n"
             ask_action += "Marquer la case (2)\n"
             ask_action += ">>> "
-            square_row, square_col = selected_square
             
             selected_action = None
             
@@ -150,7 +167,6 @@ class Game:
         ----------
         row : int
             Ligne de la case.
-        return True
         col : int
             Colonne de la case.
         
@@ -164,6 +180,20 @@ class Game:
     def mark_grid_square(self, row, col):
         """
         Marque une case de la grille.
+        
+        ...
+        
+        Paramètres
+        ----------
+        row : int
+            Ligne de la case.
+        col : int
+            Colonne de la case.
+        
+        Retour
+        --------
+        bool
+            Succès de l'opération.
         """
         return self.grid.mark_square(row, col)
     
@@ -179,22 +209,6 @@ class Game:
         """
         print(self.grid)
         
-        
-        ...
-        
-        Paramètres
-        ----------
-        first_turn : bool, default=False
-            Premier tour de la partie : la case sélectionnée est
-            forcément dévoilée.
-        
-        Retour
-        --------
-        tuple
-            Couple (selected_square, selected_action) où
-            selected_square est la liste [ligne, colonne] de la case
-            sélectionnée (indexées à partir de 0) et selected_action
-            vaut "1" (dévoiler) ou "2" (marquer).
     def end(self):
         """
         Affiche le message de fin de partie dans la console.
@@ -205,17 +219,4 @@ class Game:
         
 if __name__ == "__main__":
     game = Game()
-    game.launch()        
-        ...
-        
-        Paramètres
-        ----------
-        row : int
-            Ligne de la case.
-        col : int
-            Colonne de la case.
-        
-        Retour
-        --------
-        bool
-            Succès de l'opération.
+    game.launch()
