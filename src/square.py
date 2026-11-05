@@ -1,6 +1,30 @@
 class Square:
     """
-    Instancie une case de la grille
+    Case d'une grille de démineur.
+    
+    ...
+    
+    Attributs
+    ---------
+    is_covered : bool, default=True
+        Case couverte ou non.
+    is_mined : bool, default=False
+        Case minée ou non.
+    is_marked : bool, default=False
+        Case marquée ou non.
+    hint : int, default=0
+        Nombre de cases minées voisines.
+    
+    Méthodes
+    --------
+    reveal()
+        Découvre la case.
+    mine()
+        Mine la case.
+    mark()
+        Marque la case.
+    __str__()
+        Retourne l'affichage console de la case.
     """
     
     def __init__(self):
@@ -11,20 +35,51 @@ class Square:
     
     def reveal(self):
         """
-        Révèle la case
+        Change l'état de la case de couvert à découvert.
+        
+        ...
+        
+        Règles
+        ------
+        - Une case ne peut être découverte seulement si elle est
+        couverte.
+        
+        Retour
+        --------
+        bool
+            Succès de l'opération
         """
         self.is_covered = False
         return (self.is_mined, self.hint)
         
     def mine(self):
         """
-        Mine la case
+        Mine la case.
+        
+        ...
+        
+        Retour
+        ------
+        bool
+            Succès de l'opération.
         """
         self.is_mined = True
         
     def mark(self):
         """
-        Marque la case
+        Marque la case.
+        
+        ...
+        
+        Règles
+        ------
+        - Une case peut être marquée ou démarquée seulement si elle est
+        couverte.
+        
+        Retour
+        ------
+        bool
+            Succès de l'opération.
         """
         self.is_marked = not(self.is_marked)
     

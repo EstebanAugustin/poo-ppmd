@@ -4,7 +4,40 @@ from square import Square
 
 class Grid:
     """
-    Instancie une grille d'une partie de démineur
+    Grille de démineur.
+    
+    ...
+    
+    Attributs
+    ---------
+    n_rows : int, default=5
+        Nombre de lignes de la grille.
+    n_cols : int, default=5
+        Nombre de colonnes de la grille.
+    n_mines : int, default=3
+        Nombre de cases minées dans la grille.
+    n_squares_left : int
+        Nombre de cases restantes couvertes.
+    squares : Square[]
+        Tableau 2D des cases de la grille.
+        
+    Méthodes
+    --------
+    place_mines(excluded_row, excluded_col)
+        Place les mines sur la grille.
+    compute_hints()
+        Calcules les indices de chaque case.
+    get_square_neighbours(row, col)
+        Retourne les cases voisines d'une case.
+    __str__()
+        Retourne l'affichage console de la grille.
+    reveal_square(row, col)
+        Révèle une case et propage la découverte aux voisins.
+    count_squares()
+        Retourne le nombre de cases restantes.
+    mark_square(row, col)
+        Marque une case.
+    
     """
     
     def __init__(self, n_rows=5, n_cols=5, n_mines=3):
@@ -21,7 +54,21 @@ class Grid:
         
     def place_mines(self, excluded_row, excluded_col):
         """
-        Place les mines sur la grille
+        Place les mines sur la grille.
+        
+        ...
+        
+        Règles
+        ------
+        - Les mines ne sont placées ni sur la case cliquée par le
+        joueur ni sur ses cases voisines.
+        
+        Paramètres
+        ----------
+        excluded_row : int
+            Ligne de la case cliquée par le joueur.
+        excluded_col : int
+            Colonne de la case cliquée par le joueur.
         """
         positions = []
         for i in range(self.n_rows):
@@ -35,7 +82,13 @@ class Grid:
         
     def compute_hints(self):
         """
-        Calcule le nombre de mines voisines de chaque case
+        Calcule le nombre de cases minées adjacentes à chaque case.
+        
+        ...
+        
+        Règles
+        ------
+        - Le résultat est stocké dans l'attribut hint de chaque case.
         """
         for i in range(self.n_rows):
             for j in range(self.n_cols):
@@ -103,11 +156,47 @@ class Grid:
     
     def count_squares(self):
         return self.n_squares_left - self.n_mines
+        """
+        Retourne les cases voisines d'une case.
+        
+        ...
+        
+        Paramètres
+        ----------
+        row : int
+            Ligne de la case.
+        col : int
+            Colonne de la case.
+        
+        Retour
+        --------
+        list of tuple of int
+            Coordonnées (ligne, colonne) des cases voisines situées
+            dans la grille.
+        """
 
         
     def mark_square(self, row, col):
         """
-        Marque une case
+        Marque une case.
+        
+        ...
+        
+        Paramètres
+        ----------
+        row : int
+            Ligne de la case.
+        col : int
+            Colonne de la case.
         """
         self.squares[row][col].mark()
+                """
+        Retourne le nombre de cases restantes.
         
+        ...
+        
+        Retour
+        --------
+        int
+            Nombre de cases couvertes non minées restantes.
+        """

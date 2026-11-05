@@ -4,7 +4,35 @@ from grid import Grid
 
 class Game:
     """
-    Instancie une partie de démineur
+    Partie de démineur.
+    
+    ...
+    
+    Attributs
+    ---------
+    time : int, default=0
+        Temps écoulé de la partie.
+    level : int, default=1
+        Niveau de difficulté de la partie.
+    score : int, default=0
+        Score du joueur.
+    grid : Grid
+        Grille de la partie.
+    
+    Méthodes
+    --------
+    launch()
+        Lance une partie de démineur.
+    ask_player(first_turn=False)
+        Demande au joueur l'action à effectuer.
+    reveal_grid_square(row, col)
+        Révèle une case de la grille.
+    mark_grid_square(row, col)
+        Marque une case de la grille.
+    show()
+        Affiche la partie dans la console.
+    end()
+        Affiche le message de fin de partie dans la console.
     """
     
     def __init__(self, level=1):
@@ -16,7 +44,17 @@ class Game:
         
     def launch(self):
         """
-        Lance une partie de démineur
+        Lance une partie de démineur.
+        
+        ...
+        
+        Règles
+        ------
+        - Au premier tour, la case sélectionnée est forcément dévoilée
+        et les mines sont placées en conséquence.
+        - La partie est perdue si le joueur dévoile une case minée.
+        - La partie est gagnée si toutes les cases non minées sont
+        découvertes.
         """
         self.show()
         selected_square, selected_action = self.ask_player(first_turn=True)
@@ -87,7 +125,21 @@ class Game:
     
     def reveal_grid_square(self, row, col):
         """
-        Révèle une case de la grille
+        Révèle une case de la grille.
+        
+        ...
+        
+        Paramètres
+        ----------
+        row : int
+            Ligne de la case.
+        col : int
+            Colonne de la case.
+        
+        Retour
+        --------
+        bool
+            True si la case révélée est minée, False sinon.
         """
         return self.grid.reveal_square(row, col)
         
@@ -99,17 +151,53 @@ class Game:
     
     def show(self):
         """
-        Affiche la partie dans la console
+        Affiche la partie dans la console.
+        
+        ...
+        
+        Règles
+        ------
+        - La grille est affichée case par case, ligne par ligne.
         """
         self.grid.show()
         
+        
+        ...
+        
+        Paramètres
+        ----------
+        first_turn : bool, default=False
+            Premier tour de la partie : la case sélectionnée est
+            forcément dévoilée.
+        
+        Retour
+        --------
+        tuple
+            Couple (selected_square, selected_action) où
+            selected_square est la liste [ligne, colonne] de la case
+            sélectionnée (indexées à partir de 0) et selected_action
+            vaut "1" (dévoiler) ou "2" (marquer).
     def end(self):
         """
-        Affiche le message de fin de partie
-        dans la console
+        Affiche le message de fin de partie dans la console.
+        
+        ...
         """
         return
         
 if __name__ == "__main__":
     game = Game()
-    game.launch()
+    game.launch()        
+        ...
+        
+        Paramètres
+        ----------
+        row : int
+            Ligne de la case.
+        col : int
+            Colonne de la case.
+        
+        Retour
+        --------
+        bool
+            Succès de l'opération.
