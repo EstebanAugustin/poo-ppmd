@@ -119,18 +119,26 @@ class Grid:
                 
         return valid_neighbours
                 
-        
-    def show(self):
+    def __str__(self):
         """
-        Retourne l'affichage de la grille
+        Retourne l'affichage console de la grille.
+        
+        ...
+        
+        Retour
+        --------
+        str
+            Chaîne représentant la grille, case par case et ligne par
+            ligne.
         """
         string = ""
         for i in range(self.n_rows):
             for j in range(self.n_cols):
-                string += self.squares[i][j].show()
+                string += str(self.squares[i][j])
                 string += " "
             string += "\n"
-        print(string)
+            
+        return string
         
     def reveal_square(self, row, col):
             """

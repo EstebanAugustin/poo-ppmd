@@ -83,9 +83,23 @@ class Square:
         """
         self.is_marked = not(self.is_marked)
     
-    def show(self):
+    def __str__(self):
         """
-        Retourne l'affichage de la case
+        Retourne l'affichage console de la case.
+        
+        ...
+        
+        Règles
+        ------
+        - Carré blanc si couverte et non marquée.
+        - Carré noir si couverte et marquée.
+        - "#" si découverte et minée.
+        - Indice si découverte et non minée.
+        
+        Retour
+        ------
+        str
+            Caractère représentant la case.
         """
         if self.is_covered:
             if self.is_marked:

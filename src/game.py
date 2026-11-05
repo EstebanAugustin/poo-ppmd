@@ -159,7 +159,7 @@ class Game:
         ------
         - La grille est affichée case par case, ligne par ligne.
         """
-        self.grid.show()
+        print(self.grid)
         
         
         ...
