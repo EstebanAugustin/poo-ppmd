@@ -141,26 +141,48 @@ class Grid:
         return string
         
     def reveal_square(self, row, col):
-            """
-            Révèle une case et propage récursivement la découverte aux voisins 
-            si la case n'est pas minée et que son indice est 0.
-            """
-            current_square = self.squares[row][col]
-            
-            if not current_square.is_covered:
-                return False
-                
-            square_is_mined, square_hint = current_square.reveal()
-            self.n_squares_left -= 1
-            
-            if square_is_mined:
-                return True
-                
-            if square_hint == 0:
-                for neighbour_row, neighbour_col in self.get_square_neighbours(row, col):
-                    self.reveal_square(neighbour_row, neighbour_col)
-                    
+        """
+        Révèle une case et propage la découverte aux voisins si la case
+        n'est pas minée et que son indice est 0.
+        
+        ...
+        
+        Paramètres
+        ----------
+        row : int
+            Ligne de la case.
+        col : int
+            Colonne de la case.
+        
+        Règles
+        ------
+        - Une case déjà découverte n'est pas révélée à nouveau.
+        - La découverte se propage aux cases voisines tant que leur
+        indice est 0.
+        
+        Retour
+        --------
+        bool
+            True si la case révélée est minée, False sinon.
+        """
+        current_square = self.squares[row][col]
+        
+        if not current_square.is_covered:
             return False
+            
+        current_square.reveal()
+        self.n_squares_left -= 1
+        
+        if current_square.is_mined:
+            return True
+            
+        if current_square.hint == 0:
+            neighbours = self.get_square_neighbours(row, col)
+            
+            for neighbour_row, neighbour_col in neighbours:
+                self.reveal_square(neighbour_row, neighbour_col)
+                
+        return False
     
     def count_squares(self):
         return self.n_squares_left - self.n_mines

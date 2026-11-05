@@ -49,8 +49,13 @@ class Square:
         bool
             Succès de l'opération
         """
-        self.is_covered = False
-        return (self.is_mined, self.hint)
+        
+        if self.is_covered:
+            self.is_covered = False
+            return True
+        
+        else :
+            return False
         
     def mine(self):
         """
@@ -81,8 +86,14 @@ class Square:
         bool
             Succès de l'opération.
         """
-        self.is_marked = not(self.is_marked)
-    
+        
+        if self.is_covered == True:
+            self.is_marked = not(self.is_marked)
+            return True
+        
+        else:
+            return False
+            
     def __str__(self):
         """
         Retourne l'affichage console de la case.
@@ -108,4 +119,4 @@ class Square:
         elif self.is_mined :
             return "# "
         else:
-            return str(self.hint) + " "
+            return str(self.hint) + " "        return True
