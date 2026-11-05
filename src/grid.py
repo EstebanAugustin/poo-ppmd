@@ -45,12 +45,9 @@ class Grid:
         self.n_cols = n_cols
         self.n_mines = n_mines
         self.n_squares_left = n_rows * n_cols
-        self.squares = [[Square() for i in range(n_cols)] for i in range(n_rows)]
-
-    def generate(self, excluded_row, excluded_col):
-        self.place_mines(excluded_row, excluded_col)
-        self.compute_hints()
-        self.reveal_square(excluded_row, excluded_col)
+        self.squares = [
+            [Square() for _ in range(n_cols)] for _ in range(n_rows)
+        ]
         
     def place_mines(self, excluded_row, excluded_col):
         """

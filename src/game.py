@@ -57,8 +57,6 @@ class Game:
         découvertes.
         """
         self.show()
-        selected_square, selected_action = self.ask_player(first_turn=True)
-        self.grid.generate(selected_square[0], selected_square[1])
         
         
         while self.grid.count_squares() > 0:
@@ -66,15 +64,20 @@ class Game:
             selected_square, selected_action = self.ask_player()
             
             if selected_action == "1":
-                square_is_mined = self.reveal_grid_square(selected_square[0], selected_square[1])
+                square_is_mined = self.reveal_grid_square(
+                    square_row, 
+                    square_col
+                )
                 
                 if square_is_mined :
                     self.show()
                     print("Perdu")
-                    return
+                    return False
             
             elif selected_action == "2":
-                self.mark_grid_square(selected_square[0], selected_square[1])
+                self.mark_grid_square(
+                    square_row, 
+                    square_col)
                 
         self.show()
         print("Gagné")
@@ -96,6 +99,19 @@ class Game:
         
         answer_pattern = r"^\s*(\d+)\s*,\s*(\d+)\s*$"
         match = None
+        selected_square, selected_action = self.ask_player(
+            first_turn=True
+        )
+        
+        square_row, square_col = selected_square
+        
+        self.grid.place_mines(
+            excluded_row=square_row,
+            excluded_col=square_col
+        )
+        self.grid.compute_hints()
+        
+        self.reveal_grid_square(square_row, square_col)
         
         while match is None:
             answer_square = input(ask_square)
@@ -113,6 +129,7 @@ class Game:
             ask_action = "Dévoiler la case (1)\n"
             ask_action += "Marquer la case (2)\n"
             ask_action += ">>> "
+            square_row, square_col = selected_square
             
             selected_action = None
             
@@ -133,6 +150,7 @@ class Game:
         ----------
         row : int
             Ligne de la case.
+        return True
         col : int
             Colonne de la case.
         
