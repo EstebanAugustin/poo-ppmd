@@ -41,6 +41,10 @@ class Grid:
     """
     
     def __init__(self, n_rows=10, n_cols=10, n_mines=10):
+        if n_rows <= 0 or n_cols <= 0:
+            raise ValueError("n_rows et n_cols doivent être strictement positifs.")
+        if n_mines < 0 or n_mines >= n_rows * n_cols:
+            raise ValueError("n_mines doit être entre 0 et n_rows * n_cols - 1.")
         self._n_rows = n_rows
         self._n_cols = n_cols
         self._n_mines = n_mines

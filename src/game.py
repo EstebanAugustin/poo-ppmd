@@ -34,6 +34,8 @@ class Game:
     """
     
     def __init__(self, level=1):
+        if level <= 0:
+            raise ValueError("level doit être strictement positif.")
         self.time = 0
         self.level = level
         self.score = 0
