@@ -10,15 +10,15 @@ class Grid:
     
     Attributs
     ---------
-    n_rows : int, default=5
+    _n_rows : int, default=5
         Nombre de lignes de la grille.
-    n_cols : int, default=5
+    _n_cols : int, default=5
         Nombre de colonnes de la grille.
-    n_mines : int, default=3
+    _n_mines : int, default=3
         Nombre de cases minées dans la grille.
-    n_squares_left : int
+    _n_squares_left : int
         Nombre de cases restantes couvertes.
-    squares : Square[]
+    _squares : Square[]
         Tableau 2D des cases de la grille.
         
     Méthodes
@@ -41,13 +41,33 @@ class Grid:
     """
     
     def __init__(self, n_rows=10, n_cols=10, n_mines=10):
-        self.n_rows = n_rows
-        self.n_cols = n_cols
-        self.n_mines = n_mines
-        self.n_squares_left = n_rows * n_cols
-        self.squares = [
+        self._n_rows = n_rows
+        self._n_cols = n_cols
+        self._n_mines = n_mines
+        self._n_squares_left = n_rows * n_cols
+        self._squares = [
             [Square() for _ in range(n_cols)] for _ in range(n_rows)
         ]
+    
+    @property
+    def n_rows(self):
+        return self._n_rows
+    
+    @property
+    def n_cols(self):
+        return self._n_cols
+    
+    @property
+    def n_mines(self):
+        return self._n_mines
+    
+    @property
+    def n_squares_left(self):
+        return self._n_squares_left
+    
+    @property
+    def squares(self):
+        return self._squares
             
     def place_mines(self, excluded_row, excluded_col):
         """
@@ -71,8 +91,8 @@ class Grid:
             Colonne de la case cliquée par le joueur.
         """
         squares = []
-        for i in range(self.n_rows):
-            for j in range(self.n_cols):
+        for i in range(self._n_rows):
+            for j in range(self._n_cols):
                 if abs(i - excluded_row) > 1 and abs(j - excluded_col) > 1:
                     squares.append((i,j))
          
@@ -82,9 +102,9 @@ class Grid:
             squares[i] = squares[k]
             squares[k] = tmp
         
-        for _ in range(self.n_mines):
+        for _ in range(self._n_mines):
             i, j = squares[_]
-            self.squares[i][j].mine()
+            self._squares[i][j].mine()
         
         
     def compute_hints(self):
@@ -97,13 +117,13 @@ class Grid:
         ------
         - Le résultat est stocké dans l'attribut hint de chaque case.
         """
-        for i in range(self.n_rows):
-            for j in range(self.n_cols):
-                current_square = self.squares[i][j]
+        for i in range(self._n_rows):
+            for j in range(self._n_cols):
+                current_square = self._squares[i][j]
                 neighbours = self._get_square_neighbours(i, j)
                 
                 for k, l in neighbours:
-                    square_neighbour = self.squares[k][l]
+                    square_neighbour = self._squares[k][l]
                     
                     if square_neighbour.is_mined == True:
                         current_square.increment_hint()
@@ -141,8 +161,8 @@ class Grid:
         valid_neighbours = []
         
         for i, (row, col) in enumerate(neighbours) :
-            row_in_grid = (row >= 0 and row < self.n_rows)
-            col_in_grid = (col >= 0 and col < self.n_cols)
+            row_in_grid = (row >= 0 and row < self._n_rows)
+            col_in_grid = (col >= 0 and col < self._n_cols)
             
             if row_in_grid and col_in_grid:
                 valid_neighbours.append((row, col))
@@ -162,9 +182,9 @@ class Grid:
             ligne.
         """
         string = ""
-        for i in range(self.n_rows):
-            for j in range(self.n_cols):
-                string += str(self.squares[i][j])
+        for i in range(self._n_rows):
+            for j in range(self._n_cols):
+                string += str(self._squares[i][j])
                 string += " "
             
             string += "\n"
@@ -196,13 +216,13 @@ class Grid:
         bool
             True si la case révélée est minée, False sinon.
         """
-        current_square = self.squares[row][col]
+        current_square = self._squares[row][col]
         
         if not current_square.is_covered:
             return False
             
         current_square.reveal()
-        self.n_squares_left -= 1
+        self._n_squares_left -= 1
         
         if current_square.is_mined:
             return True
@@ -226,7 +246,7 @@ class Grid:
         int
             Nombre de cases couvertes non minées restantes.
         """
-        return self.n_squares_left - self.n_mines
+        return self._n_squares_left - self._n_mines
 
     def mark_square(self, row, col):
         """
@@ -241,5 +261,5 @@ class Grid:
         col : int
             Colonne de la case.
         """
-        self.squares[row][col].mark()
+        self._squares[row][col].mark()
         
