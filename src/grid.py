@@ -94,10 +94,10 @@ class Grid:
         excluded_col : int
             Colonne de la case cliquée par le joueur.
         """
-        self.place_mines(excluded_row, excluded_col)
-        self.compute_hints()
+        self._place_mines(excluded_row, excluded_col)
+        self._compute_hints()
     
-    def place_mines(self, excluded_row, excluded_col):
+    def _place_mines(self, excluded_row, excluded_col):
         """
         Place les mines selon l'algorithme de Fisher-Yates
         
@@ -135,7 +135,7 @@ class Grid:
             self._squares[i][j].mine()
         
         
-    def compute_hints(self):
+    def _compute_hints(self):
         """
         Calcule le nombre de cases minées adjacentes à chaque case.
         
