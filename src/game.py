@@ -12,17 +12,20 @@ class Game:
     ---------
     time : int, default=0
         Temps écoulé de la partie.
-    level : int, default=1
-        Niveau de difficulté de la partie (1 à 3).
+    level : int or None
+        Niveau de difficulté de la partie (1 à 3). None si le joueur
+        doit le choisir au lancement.
     score : int, default=0
         Score du joueur.
-    grid : Grid
-        Grille de la partie.
+    grid : Grid or None
+        Grille de la partie. None tant que le niveau n'est pas choisi.
     
     Méthodes
     --------
     launch()
         Lance une partie de démineur.
+    _ask_level()
+        Demande au joueur de choisir un niveau.
     _ask_player(first_turn=False)
         Demande au joueur l'action à effectuer.
     reveal_grid_square(row, col)
@@ -39,12 +42,28 @@ class Game:
         3: {"n_rows": 16, "n_cols": 30, "n_mines": 99},
     }
     
-    def __init__(self, level=1):
-        if level not in Game.LEVELS:
+    def __init__(self, level=None):
+        if level is not None and level not in Game.LEVELS:
             raise ValueError("level doit être 1, 2 ou 3.")
         self.time = 0
         self.level = level
         self.score = 0
+        self.grid = None
+        if level is not None:
+            self._init_grid(level)
+    
+    def _init_grid(self, level):
+        """
+        Crée la grille correspondant au niveau choisi.
+        
+        ...
+        
+        Paramètres
+        ----------
+        level : int
+            Niveau de difficulté (1 à 3).
+        """
+        self.level = level
         config = Game.LEVELS[level]
         self.grid = Grid(
             n_rows=config["n_rows"],
@@ -61,12 +80,17 @@ class Game:
         
         Règles
         ------
+        - Si aucun niveau n'a été fourni au constructeur, le joueur
+        choisit son niveau au début de la partie.
         - Au premier tour, la case sélectionnée est forcément dévoilée
         et les mines sont placées en conséquence.
         - La partie est perdue si le joueur dévoile une case minée.
         - La partie est gagnée si toutes les cases non minées sont
         découvertes.
         """
+        if self.grid is None:
+            self._init_grid(self._ask_level())
+        
         self.show()
         
         selected_square, selected_action = self._ask_player(
@@ -107,6 +131,33 @@ class Game:
         print("Gagné")
         return True
             
+    
+    def _ask_level(self):
+        """
+        Demande au joueur de choisir un niveau de difficulté.
+        
+        ...
+        
+        Retour
+        --------
+        int
+            Niveau choisi (1, 2 ou 3).
+        """
+        ask_level = "Choisissez un niveau de difficulté :\n"
+        for lvl, config in Game.LEVELS.items():
+            ask_level += f"  {lvl} - {config['n_rows']}x{config['n_cols']}, {config['n_mines']} mines\n"
+        ask_level += ">>> "
+        
+        level = None
+        
+        while level not in Game.LEVELS:
+            answer = input(ask_level).strip()
+            if answer.isdigit() and int(answer) in Game.LEVELS:
+                level = int(answer)
+            else:
+                print("Saisie invalide.\n")
+        
+        return level
     
     def _ask_player(self, first_turn=False):
         """
@@ -220,12 +271,5 @@ class Game:
         print(self.grid)
         
 if __name__ == "__main__":
-    level = None
-    while level not in Game.LEVELS:
-        answer = input("Niveau (1, 2, 3) >>> ")
-        if answer.strip() in Game.LEVELS:
-            level = int(answer.strip())
-        else:
-            print("Saisie invalide.\n")
-    game = Game(level=level)
+    game = Game()
     game.launch()
