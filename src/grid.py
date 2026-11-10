@@ -27,7 +27,7 @@ class Grid:
         Place les mines sur la grille.
     compute_hints()
         Calcules les indices de chaque case.
-    get_square_neighbours(row, col)
+    _get_square_neighbours(row, col)
         Retourne les cases voisines d'une case.
     __str__()
         Retourne l'affichage console de la grille.
@@ -94,7 +94,7 @@ class Grid:
         for i in range(self.n_rows):
             for j in range(self.n_cols):
                 current_square = self.squares[i][j]
-                neighbours = self.get_square_neighbours(i, j)
+                neighbours = self._get_square_neighbours(i, j)
                 
                 for k, l in neighbours:
                     square_neighbour = self.squares[k][l]
@@ -102,7 +102,7 @@ class Grid:
                     if square_neighbour.is_mined == True:
                         current_square.hint += 1
         
-    def get_square_neighbours(self, row, col):
+    def _get_square_neighbours(self, row, col):
         """
         Retourne les cases voisines d'une case.
         
@@ -202,7 +202,7 @@ class Grid:
             return True
             
         if current_square.hint == 0:
-            neighbours = self.get_square_neighbours(row, col)
+            neighbours = self._get_square_neighbours(row, col)
             
             for neighbour_row, neighbour_col in neighbours:
                 self.reveal_square(neighbour_row, neighbour_col)
