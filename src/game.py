@@ -64,11 +64,10 @@ class Game:
         
         square_row, square_col = selected_square
         
-        self.grid.place_mines(
+        self.grid.prepare(
             excluded_row=square_row,
             excluded_col=square_col
         )
-        self.grid.compute_hints()
         
         self._reveal_grid_square(square_row, square_col)
         

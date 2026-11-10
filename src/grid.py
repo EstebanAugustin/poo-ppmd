@@ -23,6 +23,8 @@ class Grid:
         
     Méthodes
     --------
+    prepare(excluded_row, excluded_col)
+        Prépare la grille : place les mines et calcule les indices.
     place_mines(excluded_row, excluded_col)
         Place les mines sur la grille.
     compute_hints()
@@ -77,6 +79,24 @@ class Grid:
     def squares(self):
         return self._squares
             
+    def prepare(self, excluded_row, excluded_col):
+        """
+        Prépare la grille pour le premier tour : place les mines
+        (en excluant la zone autour de la case cliquée) puis calcule
+        les indices de chaque case.
+        
+        ...
+        
+        Paramètres
+        ----------
+        excluded_row : int
+            Ligne de la case cliquée par le joueur.
+        excluded_col : int
+            Colonne de la case cliquée par le joueur.
+        """
+        self.place_mines(excluded_row, excluded_col)
+        self.compute_hints()
+    
     def place_mines(self, excluded_row, excluded_col):
         """
         Place les mines selon l'algorithme de Fisher-Yates
