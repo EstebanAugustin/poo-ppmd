@@ -23,7 +23,7 @@ class Game:
     --------
     launch()
         Lance une partie de démineur.
-    ask_player(first_turn=False)
+    _ask_player(first_turn=False)
         Demande au joueur l'action à effectuer.
     reveal_grid_square(row, col)
         Révèle une case de la grille.
@@ -58,7 +58,7 @@ class Game:
         """
         self.show()
         
-        selected_square, selected_action = self.ask_player(
+        selected_square, selected_action = self._ask_player(
             first_turn=True
         )
         
@@ -70,15 +70,15 @@ class Game:
         )
         self.grid.compute_hints()
         
-        self.reveal_grid_square(square_row, square_col)
+        self._reveal_grid_square(square_row, square_col)
         
         while self.grid.count_squares() > 0:
             self.show()
-            selected_square, selected_action = self.ask_player()
+            selected_square, selected_action = self._ask_player()
             square_row, square_col = selected_square
             
             if selected_action == "1":
-                square_is_mined = self.reveal_grid_square(
+                square_is_mined = self._reveal_grid_square(
                     square_row, 
                     square_col
                 )
@@ -89,7 +89,7 @@ class Game:
                     return False
             
             elif selected_action == "2":
-                self.mark_grid_square(
+                self._mark_grid_square(
                     square_row, 
                     square_col)
                 
@@ -98,7 +98,7 @@ class Game:
         return True
             
     
-    def ask_player(self, first_turn=False):
+    def _ask_player(self, first_turn=False):
         """
         Demande au joueur l'action à effectuer :
         - dévoiler une case
@@ -138,7 +138,7 @@ class Game:
                 print("Saisie invalide.\n")
                 
         selected_square = [int(match.group(1))-1, int(match.group(2))-1]
-
+        
         if first_turn:
             selected_action = "1"
         
@@ -157,7 +157,7 @@ class Game:
         
         return (selected_square, selected_action)
     
-    def reveal_grid_square(self, row, col):
+    def _reveal_grid_square(self, row, col):
         """
         Révèle une case de la grille.
         
@@ -177,7 +177,7 @@ class Game:
         """
         return self.grid.reveal_square(row, col)
         
-    def mark_grid_square(self, row, col):
+    def _mark_grid_square(self, row, col):
         """
         Marque une case de la grille.
         
