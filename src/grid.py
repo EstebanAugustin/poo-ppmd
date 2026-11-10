@@ -48,17 +48,20 @@ class Grid:
         self.squares = [
             [Square() for _ in range(n_cols)] for _ in range(n_rows)
         ]
-        
+            
     def place_mines(self, excluded_row, excluded_col):
         """
-        Place les mines sur la grille.
+        Place les mines selon l'algorithme de Fisher-Yates
         
         ...
         
-        Règles
-        ------
-        - Les mines ne sont placées ni sur la case cliquée par le
-        joueur ni sur ses cases voisines.
+        Algorithme
+        ----------
+        - Créer la liste contenant toutes les cases de la grille
+        - Pour i allant de n-1 à 1:
+            - Choisir k aléatoire entre 0 et i
+            - Échanger la case i avec la case k dans la liste
+        - Les M premières cases de la liste sont les cases minées
         
         Paramètres
         ----------
@@ -67,19 +70,22 @@ class Grid:
         excluded_col : int
             Colonne de la case cliquée par le joueur.
         """
-        positions = []
+        squares = []
         for i in range(self.n_rows):
-            i_near_excluded_row = abs(i - excluded_row) <= 1
-            
             for j in range(self.n_cols):
-                j_near_excluded_col = abs(j - excluded_col) <= 1
-                
-                if not (i_near_excluded_row and j_near_excluded_col):
-                    positions.append((i, j))
+                if abs(i - excluded_row) > 1 and abs(j - excluded_col) > 1:
+                    squares.append((i,j))
+         
+        for i in range(len(squares)-1, 0, -1):
+            k = random.randint(0, i)
+            tmp = squares[i]
+            squares[i] = squares[k]
+            squares[k] = tmp
         
-        random.shuffle(positions)
-        for i, j in positions[:self.n_mines]:
+        for _ in range(self.n_mines):
+            i, j = squares[_]
             self.squares[i][j].mine()
+        
         
     def compute_hints(self):
         """
