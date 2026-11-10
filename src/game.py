@@ -10,8 +10,6 @@ class Game:
     
     Attributs
     ---------
-    time : int, default=0
-        Temps écoulé de la partie.
     level : int or None
         Niveau de difficulté de la partie (1 à 3). None si le joueur
         doit le choisir au lancement.
@@ -45,7 +43,6 @@ class Game:
     def __init__(self, level=None):
         if level is not None and level not in Game.LEVELS:
             raise ValueError("level doit être 1, 2 ou 3.")
-        self.time = 0
         self.level = level
         self.score = 0
         self.grid = None
