@@ -40,7 +40,7 @@ class Grid:
     
     """
     
-    def __init__(self, n_rows=5, n_cols=5, n_mines=3):
+    def __init__(self, n_rows=10, n_cols=10, n_mines=10):
         self.n_rows = n_rows
         self.n_cols = n_cols
         self.n_mines = n_mines
@@ -106,7 +106,7 @@ class Grid:
                     square_neighbour = self.squares[k][l]
                     
                     if square_neighbour.is_mined == True:
-                        current_square.hint += 1
+                        current_square.increment_hint()
         
     def _get_square_neighbours(self, row, col):
         """

@@ -6,13 +6,13 @@ class Square:
     
     Attributs
     ---------
-    is_covered : bool, default=True
+    _is_covered : bool, default=True
         Case couverte ou non.
-    is_mined : bool, default=False
+    _is_mined : bool, default=False
         Case minée ou non.
-    is_marked : bool, default=False
+    _is_marked : bool, default=False
         Case marquée ou non.
-    hint : int, default=0
+    _hint : int, default=0
         Nombre de cases minées voisines.
     
     Méthodes
@@ -23,15 +23,33 @@ class Square:
         Mine la case.
     mark()
         Marque la case.
+    increment_hint()
+        Incrémente l'indice de la case.
     __str__()
         Retourne l'affichage console de la case.
     """
     
     def __init__(self):
-        self.is_covered = True
-        self.is_mined = False
-        self.is_marked = False
-        self.hint = 0
+        self._is_covered = True
+        self._is_mined = False
+        self._is_marked = False
+        self._hint = 0
+    
+    @property
+    def is_covered(self):
+        return self._is_covered
+    
+    @property
+    def is_mined(self):
+        return self._is_mined
+    
+    @property
+    def is_marked(self):
+        return self._is_marked
+    
+    @property
+    def hint(self):
+        return self._hint
     
     def reveal(self):
         """
@@ -50,8 +68,8 @@ class Square:
             Succès de l'opération
         """
         
-        if self.is_covered:
-            self.is_covered = False
+        if self._is_covered:
+            self._is_covered = False
             return True
         
         else :
@@ -69,7 +87,7 @@ class Square:
             Succès de l'opération.
         """
         
-        self.is_mined = True
+        self._is_mined = True
         return True
         
     def mark(self):
@@ -84,18 +102,32 @@ class Square:
         couverte.
         
         Retour
-        ------
+        --------
         bool
             Succès de l'opération.
         """
         
-        if self.is_covered == True:
-            self.is_marked = not(self.is_marked)
+        if self._is_covered == True:
+            self._is_marked = not(self._is_marked)
             return True
         
         else:
             return False
             
+    def increment_hint(self):
+        """
+        Incrémente l'indice de la case de 1.
+        
+        ...
+        
+        Retour
+        ------
+        int
+            Nouvel indice de la case.
+        """
+        self._hint += 1
+        return self._hint
+        
     def __str__(self):
         """
         Retourne l'affichage console de la case.
@@ -110,16 +142,16 @@ class Square:
         - Indice si découverte et non minée.
         
         Retour
-        ------
+        --------
         str
             Caractère représentant la case.
         """
-        if self.is_covered:
-            if self.is_marked:
+        if self._is_covered:
+            if self._is_marked:
                 return "\U00002B1B"
             return "\U00002B1C"  # carré
-        elif self.is_mined :
+        elif self._is_mined :
             return "# "
         else:
-            return str(self.hint) + " "
+            return str(self._hint) + " "
         
