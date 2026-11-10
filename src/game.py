@@ -31,8 +31,6 @@ class Game:
         Marque une case de la grille.
     show()
         Affiche la partie dans la console.
-    end()
-        Affiche le message de fin de partie dans la console.
     """
     
     def __init__(self, level=1):
@@ -208,14 +206,6 @@ class Game:
         - La grille est affichée case par case, ligne par ligne.
         """
         print(self.grid)
-        
-    def end(self):
-        """
-        Affiche le message de fin de partie dans la console.
-        
-        ...
-        """
-        return
         
 if __name__ == "__main__":
     game = Game()
