@@ -44,7 +44,6 @@ class Game:
         if level is not None and level not in Game.LEVELS:
             raise ValueError("level doit être 1, 2 ou 3.")
         self.level = level
-        self.score = 0
         self.grid = None
         if level is not None:
             self._init_grid(level)
