@@ -29,6 +29,8 @@ class Grid:
         Calcules les indices de chaque case.
     _get_square_neighbours(row, col)
         Retourne les cases voisines d'une case.
+    _is_in_grid(row, col)
+        Vérifie que les coordonnées sont dans la grille.
     __str__()
         Retourne l'affichage console de la grille.
     reveal_square(row, col)
@@ -132,6 +134,26 @@ class Grid:
                     if square_neighbour.is_mined == True:
                         current_square.increment_hint()
         
+    def _is_in_grid(self, row, col):
+        """
+        Vérifie que les coordonnées sont dans la grille.
+        
+        ...
+        
+        Paramètres
+        ----------
+        row : int
+            Ligne de la case.
+        col : int
+            Colonne de la case.
+        
+        Retour
+        --------
+        bool
+            True si la case est dans la grille, False sinon.
+        """
+        return 0 <= row < self._n_rows and 0 <= col < self._n_cols
+    
     def _get_square_neighbours(self, row, col):
         """
         Retourne les cases voisines d'une case.
@@ -214,12 +236,16 @@ class Grid:
         - Une case déjà découverte n'est pas révélée à nouveau.
         - La découverte se propage aux cases voisines tant que leur
         indice est 0.
+        - Si les coordonnées sont hors de la grille, rien ne se passe.
         
         Retour
         --------
         bool
             True si la case révélée est minée, False sinon.
         """
+        if not self._is_in_grid(row, col):
+            return False
+            
         current_square = self._squares[row][col]
         
         if not current_square.is_covered:
@@ -264,6 +290,18 @@ class Grid:
             Ligne de la case.
         col : int
             Colonne de la case.
+        
+        Règles
+        ------
+        - Si les coordonnées sont hors de la grille, rien ne se passe.
+        
+        Retour
+        --------
+        bool
+            Succès de l'opération.
         """
-        self._squares[row][col].mark()
+        if not self._is_in_grid(row, col):
+            return False
+            
+        return self._squares[row][col].mark()
         
