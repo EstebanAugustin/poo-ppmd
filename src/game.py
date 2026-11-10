@@ -72,7 +72,7 @@ class Game:
         
         self._reveal_grid_square(square_row, square_col)
         
-        while self.grid.count_squares() > 0:
+        while self.grid.count_safe_squares_left() > 0:
             self.show()
             selected_square, selected_action = self._ask_player()
             square_row, square_col = selected_square

@@ -37,8 +37,8 @@ class Grid:
         Révèle une case et propage la découverte aux voisins.
     is_mined(row, col)
         Indique si une case est minée.
-    count_squares()
-        Retourne le nombre de cases restantes.
+    count_safe_squares_left()
+        Retourne le nombre de cases non minées restantes.
     mark_square(row, col)
         Marque une case.
     
@@ -291,9 +291,9 @@ class Grid:
             
         return self._squares[row][col].is_mined
     
-    def count_squares(self):
+    def count_safe_squares_left(self):
         """
-        Retourne le nombre de cases restantes.
+        Retourne le nombre de cases non minées restantes.
         
         ...
         
