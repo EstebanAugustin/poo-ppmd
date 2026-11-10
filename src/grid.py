@@ -35,6 +35,8 @@ class Grid:
         Retourne l'affichage console de la grille.
     reveal_square(row, col)
         Révèle une case et propage la découverte aux voisins.
+    is_mined(row, col)
+        Indique si une case est minée.
     count_squares()
         Retourne le nombre de cases restantes.
     mark_square(row, col)
@@ -235,13 +237,13 @@ class Grid:
         ------
         - Une case déjà découverte n'est pas révélée à nouveau.
         - La découverte se propage aux cases voisines tant que leur
-        indice est 0.
+        indice est 0 et qu'elles ne sont pas minées.
         - Si les coordonnées sont hors de la grille, rien ne se passe.
         
         Retour
         --------
         bool
-            True si la case révélée est minée, False sinon.
+            True si la case a été révélée, False sinon.
         """
         if not self._is_in_grid(row, col):
             return False
@@ -254,16 +256,40 @@ class Grid:
         current_square.reveal()
         self._n_squares_left -= 1
         
-        if current_square.is_mined:
-            return True
-            
-        if current_square.hint == 0:
+        if current_square.hint == 0 and not current_square.is_mined:
             neighbours = self._get_square_neighbours(row, col)
             
             for neighbour_row, neighbour_col in neighbours:
                 self.reveal_square(neighbour_row, neighbour_col)
                 
-        return False
+        return True
+    
+    def is_mined(self, row, col):
+        """
+        Indique si une case est minée.
+        
+        ...
+        
+        Paramètres
+        ----------
+        row : int
+            Ligne de la case.
+        col : int
+            Colonne de la case.
+        
+        Règles
+        ------
+        - Si les coordonnées sont hors de la grille, retourne False.
+        
+        Retour
+        --------
+        bool
+            True si la case est minée, False sinon.
+        """
+        if not self._is_in_grid(row, col):
+            return False
+            
+        return self._squares[row][col].is_mined
     
     def count_squares(self):
         """

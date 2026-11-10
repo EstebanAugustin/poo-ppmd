@@ -78,12 +78,12 @@ class Game:
             square_row, square_col = selected_square
             
             if selected_action == "1":
-                square_is_mined = self._reveal_grid_square(
+                revealed = self._reveal_grid_square(
                     square_row, 
                     square_col
                 )
                 
-                if square_is_mined :
+                if revealed and self.grid.is_mined(square_row, square_col):
                     self.show()
                     print("Perdu")
                     return False
@@ -173,7 +173,7 @@ class Game:
         Retour
         --------
         bool
-            True si la case révélée est minée, False sinon.
+            True si la case a été révélée, False sinon.
         """
         return self.grid.reveal_square(row, col)
         
