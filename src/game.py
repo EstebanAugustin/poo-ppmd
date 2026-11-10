@@ -13,7 +13,7 @@ class Game:
     time : int, default=0
         Temps écoulé de la partie.
     level : int, default=1
-        Niveau de difficulté de la partie.
+        Niveau de difficulté de la partie (1 à 3).
     score : int, default=0
         Score du joueur.
     grid : Grid
@@ -33,13 +33,24 @@ class Game:
         Affiche la partie dans la console.
     """
     
+    LEVELS = {
+        1: {"n_rows": 9,  "n_cols": 9,  "n_mines": 10},
+        2: {"n_rows": 16, "n_cols": 16, "n_mines": 40},
+        3: {"n_rows": 16, "n_cols": 30, "n_mines": 99},
+    }
+    
     def __init__(self, level=1):
-        if level <= 0:
-            raise ValueError("level doit être strictement positif.")
+        if level not in Game.LEVELS:
+            raise ValueError("level doit être 1, 2 ou 3.")
         self.time = 0
         self.level = level
         self.score = 0
-        self.grid = Grid()
+        config = Game.LEVELS[level]
+        self.grid = Grid(
+            n_rows=config["n_rows"],
+            n_cols=config["n_cols"],
+            n_mines=config["n_mines"]
+        )
         
         
     def launch(self):
@@ -209,5 +220,12 @@ class Game:
         print(self.grid)
         
 if __name__ == "__main__":
-    game = Game()
+    level = None
+    while level not in Game.LEVELS:
+        answer = input("Niveau (1, 2, 3) >>> ")
+        if answer.strip() in Game.LEVELS:
+            level = int(answer.strip())
+        else:
+            print("Saisie invalide.\n")
+    game = Game(level=level)
     game.launch()
